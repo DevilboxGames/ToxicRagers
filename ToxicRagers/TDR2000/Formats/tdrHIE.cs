@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
+﻿using System.Globalization;
 
 using ToxicRagers.Helpers;
 
@@ -49,6 +45,11 @@ namespace ToxicRagers.TDR2000.Formats
         public List<TDRNode> Nodes { get; set; } = new List<TDRNode>();
 
         public TDRNode Root => Nodes[0];
+
+        public static HIE Load(string path)
+        {
+            return Load(path, null);
+        }
 
         public static HIE Load(string path, string hFilePath = null)
         {
@@ -251,15 +252,6 @@ namespace ToxicRagers.TDR2000.Formats
 
             walkHierarchy(hie.Root, 1, hie);
 
-            foreach (var matrix in hie.Matrixes)
-            {
-                var componentTextFilename = Path.Combine(fi.DirectoryName, matrix.Name);
-                if (File.Exists(componentTextFilename))
-                {
-                    matrix.ComponentText = CarComponentText.Load(componentTextFilename);
-                }
-            }
-
             return hie;
         }
 
@@ -449,7 +441,6 @@ namespace ToxicRagers.TDR2000.Formats
         public string Name { get; set; }
 
         public Matrix4D Matrix { get; set; } = Matrix4D.Identity;
-        public CarComponentText ComponentText;
     }
 
     public class TDRMaterial

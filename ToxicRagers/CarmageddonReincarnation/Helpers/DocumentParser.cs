@@ -11,6 +11,7 @@ namespace ToxicRagers.CarmageddonReincarnation.Helpers
         BinaryReader br;
         long position;
         public int LineNum { get; set; }
+
         public long Position
         {
             get => position;
@@ -90,12 +91,10 @@ namespace ToxicRagers.CarmageddonReincarnation.Helpers
                         break;
 
                     case 10:
-                        if (s.Length == 0)
-                        {
-                            LineNum++;
-                        }
+                        if (s.Length == 0) { LineNum++; }
                         bRead = (s.Length == 0);
                         break;
+
                     case 13:
                         bRead = (s.Length == 0);
                         break;
@@ -116,6 +115,7 @@ namespace ToxicRagers.CarmageddonReincarnation.Helpers
             if (s.IndexOf("/") > -1) { s = s.Substring(0, s.IndexOf("/")).Trim(); } else { s = s.Trim(); }
 
             lastLine = (s.Length > 0 ? s : null);
+            LineNum++;
 
             LineNum++;
             return lastLine;
@@ -147,6 +147,7 @@ namespace ToxicRagers.CarmageddonReincarnation.Helpers
         {
             return Colour.Parse(ReadNextLine());
         }
+
         public string[] ReadStringArray(int expectedLength = -1)
         {
             string[] a = ReadNextLine().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);

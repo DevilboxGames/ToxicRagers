@@ -159,15 +159,14 @@ namespace ToxicRagers.Helpers
 
         public override bool Equals(object obj)
         {
-	        Matrix3D other = (Matrix3D)obj;
+            Matrix3D other = (Matrix3D)obj;
 
-	        if (other == null)
-		        return false;
+            if (other == null) { return false; }
 
-	        return M11 == other.M11 && M12 == other.M12 && M13 == other.M13 &&
-	               M21 == other.M21 && M22 == other.M22 && M23 == other.M23 &&
-	               M31 == other.M31 && M32 == other.M32 && M33 == other.M33 &&
-	               M41 == other.M41 && M42 == other.M42 && M43 == other.M43;
+            return M11 == other.M11 && M12 == other.M12 && M13 == other.M13 &&
+                   M21 == other.M21 && M22 == other.M22 && M23 == other.M23 &&
+                   M31 == other.M31 && M32 == other.M32 && M33 == other.M33 &&
+                   M41 == other.M41 && M42 == other.M42 && M43 == other.M43;
         }
 
         public override string ToString()

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.Text;
 
 using ToxicRagers.Helpers;
 
@@ -11,7 +9,7 @@ namespace ToxicRagers.Stainless.Formats
         public static BSF Load(string path)
         {
             FileInfo fi = new FileInfo(path);
-            Logger.LogToFile(Logger.LogLevel.Info, $"{path}");
+            Logger.LogToFile(Logger.LogLevel.Info, $"BSF loading {path}");
 
             BSF bsf = new BSF();
 
@@ -42,6 +40,38 @@ namespace ToxicRagers.Stainless.Formats
             }
 
             return bsf;
+        }
+
+        // With thanks to ManIkWeet (PR#4)
+        public void Save(string path)
+        {
+            var fileInfo = new FileInfo(path);
+            Logger.LogToFile(Logger.LogLevel.Info, $"BSF saving {path}");
+
+            using (BinaryWriter writer = new BinaryWriter(File.Create(fileInfo.FullName), Encoding.Unicode))
+            {
+                writer.Write((byte)0x42); // B
+                writer.Write((byte)0x5a); // Z
+                writer.Write((byte)0x42); // B
+                writer.Write((byte)0x54); // T
+
+                //no clue what these mean
+                writer.Write((ushort)1);
+                writer.Write((ushort)2);
+                writer.Write((uint)16);
+                writer.Write((uint)0);
+
+                foreach (var kvp in this)
+                {
+                    var key = kvp.Key;
+                    var value = kvp.Value;
+                    writer.Write((byte)0); //all entries seem prefixed with a 0 byte
+                    writer.Write((byte)key.Length);
+                    writer.Write((short)value.Length); //odd, not ushort? possible mistake in the read function? depends on endianness
+                    writer.Write(key.ToCharArray());
+                    writer.Write(value.ToCharArray());
+                }
+            }
         }
     }
 }

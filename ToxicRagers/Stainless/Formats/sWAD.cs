@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
+﻿using System.IO.Compression;
 
 using ToxicRagers.Helpers;
 
@@ -33,17 +29,18 @@ namespace ToxicRagers.Stainless.Formats
 
         public static WAD Load(string path)
         {
-	        FileInfo fi = new FileInfo(path);
-	        Logger.LogToFile(Logger.LogLevel.Info, "{0}", path);
-	        using (Stream stream = fi.OpenRead())
-	        {
-		        return Load(stream, Path.GetFileNameWithoutExtension(path), Path.GetDirectoryName(path));
-	        }
+            FileInfo fi = new FileInfo(path);
+            Logger.LogToFile(Logger.LogLevel.Info, "{0}", path);
+            using (Stream stream = fi.OpenRead())
+            {
+                return Load(stream, Path.GetFileNameWithoutExtension(path), Path.GetDirectoryName(path));
+            }
         }
+
         public static WAD Load(Stream stream, string name, string location)
         {
 
-			WAD wad = new WAD
+            WAD wad = new WAD
             {
                 Name = name,
                 Location = location
@@ -54,7 +51,7 @@ namespace ToxicRagers.Stainless.Formats
                 if (br.ReadByte() != 0x34 ||
                     br.ReadByte() != 0x12)
                 {
-                    Logger.LogToFile(Logger.LogLevel.Error, "{0} isn't a valid WAD file", name);
+                    Logger.LogToFile(Logger.LogLevel.Error, $"{name} isn't a valid WAD file");
                     return null;
                 }
 

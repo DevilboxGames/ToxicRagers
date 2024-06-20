@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-
-using ToxicRagers.Helpers;
+﻿using ToxicRagers.Helpers;
 
 namespace ToxicRagers.Core.Formats
 {
@@ -27,16 +23,15 @@ namespace ToxicRagers.Core.Formats
         {
             FileInfo fi = new FileInfo(path);
             Logger.LogToFile(Logger.LogLevel.Info, "{0}", path);
-
             using (Stream stream = fi.OpenRead())
             {
-	            return Load(stream, Path.GetFileNameWithoutExtension(path), Path.GetDirectoryName(path) + "\\");
+                return Load(stream, Path.GetFileNameWithoutExtension(path), Path.GetDirectoryName(path) + "\\");
             }
         }
 
         public static OBB Load(Stream stream, string name, string location)
         {
-			OBB obb = new OBB()
+            OBB obb = new()
             {
                 name = name,
                 location = location
@@ -121,9 +116,10 @@ namespace ToxicRagers.Core.Formats
                 buff = null;
             }
         }
+
         public byte[] ExtractToStream(OBBEntry file)
         {
-           
+
             using (FileStream fs = new FileStream(location + name + (name.EndsWith(".obb") == false ? ".obb" : ""), FileMode.Open))
             {
                 fs.Seek(file.Offset, SeekOrigin.Begin);
@@ -158,10 +154,9 @@ namespace ToxicRagers.Core.Formats
             get => name;
             set => name = value;
         }
-
         public virtual byte[] GetData()
         {
-	        throw new NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 
@@ -171,7 +166,7 @@ namespace ToxicRagers.Core.Formats
 
         public override byte[] GetData()
         {
-	        return File.ReadAllBytes(Path);
+            return File.ReadAllBytes(Path);
         }
     }
 
@@ -181,7 +176,7 @@ namespace ToxicRagers.Core.Formats
 
         public override byte[] GetData()
         {
-	        return Data;
+            return Data;
         }
     }
 }

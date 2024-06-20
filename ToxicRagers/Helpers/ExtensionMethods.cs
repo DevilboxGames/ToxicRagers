@@ -134,6 +134,14 @@ namespace ToxicRagers.Helpers
             bw.Write((byte)0);
         }
 
+        public static void WriteBytes(this BinaryWriter bw, int count, byte b = 0)
+        {
+            byte[] buff = new byte[count];
+            if (b != 0) { for (int i = 0; i < buff.Length; i++) { buff[i] = b; } }
+
+            bw.Write(buff);
+        }
+
         public static int ToInt(this string s)
         {
             return int.Parse(s);

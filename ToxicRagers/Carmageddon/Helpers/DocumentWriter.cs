@@ -55,6 +55,7 @@ namespace ToxicRagers.Carmageddon.Helpers
         public void WriteSection(string sectionHeading, string content, string comment = null)
         {
             sectionHeading = $"{new string(IndentCharacter, CurrentIndent)}[{sectionHeading}]";
+
             BaseStream.Write(sectionHeading);
 
             if (comment != null)
@@ -70,6 +71,7 @@ namespace ToxicRagers.Carmageddon.Helpers
             BaseStream.WriteLine();
             BaseStream.WriteLine();
         }
+
         public void Dispose()
         {
             BaseStream.Dispose();
