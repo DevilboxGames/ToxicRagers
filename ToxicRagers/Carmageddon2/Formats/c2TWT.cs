@@ -46,7 +46,7 @@ namespace ToxicRagers.Carmageddon2.Formats
         {
             TWT twt = new TWT();
 
-            using (BinaryReader br = new BinaryReader(stream, Encoding.Default))
+            using (BinaryReader br = new BinaryReader(stream, Encoding.ASCII))
             {
                 br.ReadInt32();     // length
 
@@ -113,8 +113,23 @@ namespace ToxicRagers.Carmageddon2.Formats
             return entry.Data;
         }
 
+        public void ExtractAll(string destination = "")
+        {
+            if (string.IsNullOrEmpty(destination))
+            {
+                destination = Location;
+            }
+            foreach (TWTEntry entry in Contents)
+            {
+                Extract(entry, Path.Combine(destination, this.Name));
+            }
+        }
         public void Extract(TWTEntry entry, string destination)
         {
+            if (!Directory.Exists(destination))
+            {
+                Directory.CreateDirectory(destination);
+            }
             using (BinaryWriter bw = new BinaryWriter(new FileStream(Path.Combine(destination, entry.Name), FileMode.Create)))
             {
                 bw.Write(entry.Data);

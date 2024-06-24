@@ -107,6 +107,11 @@ namespace ToxicRagers.Brender.Formats
 
         public void Save(string path)
         {
+            Save(path, Pixies);
+        }
+
+        public void Save(string path, IEnumerable<PIXIE> pixies)
+        {
             using (FileStream fs = new FileStream(path, FileMode.Create))
             using (BEBinaryWriter bw = new BEBinaryWriter(fs))
             {
@@ -115,7 +120,7 @@ namespace ToxicRagers.Brender.Formats
                 bw.WriteInt32(0x2);
                 bw.WriteInt32(0x2);
 
-                foreach (PIXIE pixie in Pixies)
+                foreach (PIXIE pixie in pixies)
                 {
                     bw.WriteInt32(0x3);
                     bw.WriteInt32(12 + pixie.Name.Length);
@@ -137,6 +142,18 @@ namespace ToxicRagers.Brender.Formats
                     bw.WriteInt32(0x0);
                     bw.WriteInt32(0);
                 }
+            }
+        }
+
+        public void ExtractPixies(string destination)
+        {
+            if (!Directory.Exists(destination))
+            {
+                Directory.CreateDirectory(destination);
+            }
+            foreach (PIXIE pixie in Pixies)
+            {
+                Save(Path.Combine(destination,$"{pixie.Name}.pix"), new[]{pixie});
             }
         }
 
