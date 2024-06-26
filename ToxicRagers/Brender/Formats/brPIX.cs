@@ -187,7 +187,7 @@ namespace ToxicRagers.Brender.Formats
         public byte[] Data { get; private set; }
 
         public PixelmapFormat Format { get; set; }
-
+        
         public int Width { get; set; }
 
         public int Height { get; set; }
@@ -309,8 +309,11 @@ namespace ToxicRagers.Brender.Formats
 
         public Bitmap GetBitmap()
         {
-            Bitmap bmp = new Bitmap(Width, Height, PixelFormat.Format32bppArgb);
-            BitmapData bmpdata = bmp.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            bool HasTransparency = Format == PixelmapFormat.C2_16bitAlpha ||
+                                   Format == PixelmapFormat.Indexed8bit && Data.Any(b => b == 0);
+            
+            Bitmap bmp = new Bitmap(Width, Height, HasTransparency ? PixelFormat.Format32bppArgb : PixelFormat.Format24bppRgb);
+            BitmapData bmpdata = bmp.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadWrite, HasTransparency ? PixelFormat.Format32bppArgb : PixelFormat.Format24bppRgb);
 
             using (MemoryStream nms = new MemoryStream())
             {
@@ -322,7 +325,10 @@ namespace ToxicRagers.Brender.Formats
                         nms.WriteByte(c.B);
                         nms.WriteByte(c.G);
                         nms.WriteByte(c.R);
-                        nms.WriteByte(c.A);
+                        if (HasTransparency)
+                        {
+                            nms.WriteByte(c.A);
+                        }
                     }
                 }
 

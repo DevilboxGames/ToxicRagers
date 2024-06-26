@@ -16,12 +16,22 @@ namespace ToxicRagers.Carmageddon2.Formats
 
         public static TWT Create(string path)
         {
+            return Create(path, path);
+        }
+        public static TWT Create(string path, string outputLocation, bool addContents = false)
+        {
             TWT twt = new TWT
             {
                 Name = Path.GetFileNameWithoutExtension(path),
-                Location = Path.GetDirectoryName(path)
+                Location = Path.GetDirectoryName(outputLocation)
             };
-
+            if (addContents)
+            {
+                foreach (string file in Directory.EnumerateFileSystemEntries(path,"*",SearchOption.AllDirectories))
+                {
+                    twt.Contents.Add(TWTEntry.FromFile(file));
+                }
+            }
             twt.Save();
 
             return twt;
