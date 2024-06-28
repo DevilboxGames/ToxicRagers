@@ -27,7 +27,7 @@ namespace ToxicRagers.Carmageddon2.Formats
             };
             if (addContents)
             {
-                foreach (string file in Directory.EnumerateFileSystemEntries(path,"*",SearchOption.AllDirectories))
+                foreach (string file in Directory.EnumerateFileSystemEntries(path,"*",SearchOption.TopDirectoryOnly))
                 {
                     twt.Contents.Add(TWTEntry.FromFile(file));
                 }
