@@ -7,8 +7,22 @@ namespace ToxicRagers.Brender.Formats
     public class DAT
     {
         public List<DatMesh> DatMeshes { get; set; } = new List<DatMesh>();
+        public DAT() { }
+
+        public DAT(DatMesh dm)
+        {
+            DatMeshes.Add(dm);
+        }
 
         public static DAT Load(string path)
+        {
+            FileInfo fi = new FileInfo(path);
+            Logger.LogToFile(Logger.LogLevel.Info, "{0}", path);
+
+            return Load(fi.OpenRead(), path);
+        }
+
+        public static DAT Load(Stream stream, string path)
         {
             FileInfo fi = new(path);
             Logger.LogToFile(Logger.LogLevel.Info, "{0}", path);
